@@ -1,3 +1,4 @@
+import Contacts from "./components/Contacts/Contacts";
 import From from "./components/Form/From";
 import Header from "./components/Header/Header";
 
@@ -6,8 +7,9 @@ function App() {
     <>
       <div dir="rtl" className="w-full h-screen bg-gray-100 ">
         <Header title={"وب اپلیکشن مدیریت مخاطبین"} />
-        <div className=" grid grid-cols-2  gap-14 w-full p-5">
+        <div className=" grid grid-cols-2  gap-14 w-full p-1">
           <From />
+          <Contacts />
         </div>
       </div>
     </>
