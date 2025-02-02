@@ -4,7 +4,7 @@ import Button from '../../shared/Button/Button'
 
 function ContactCard() {
   return (
-    <div className='rounded-md bg-gray-300 p-6 flex flex-col gap-4'>
+    <div className='rounded-md bg-gray-300 px-6 py-3 flex flex-col gap-4'>
         <div className='flex flex-col gap-0.5'>
             <UserInfo info={"ابوالفضل"} label={"نام"} />
             <UserInfo info={"فامیل"} label={"نسبت"} />
