@@ -8,11 +8,7 @@ import Loading from "../Loading/Loading";
 
 function From({ setContacts, information, setVisibility }) {
   const [formData, setFormData] = useState({
-    name: "",
-    lastName: "",
-    relationship: "",
-    email: "",
-    phone: "",
+
   });
   const [error, setError] = useState({});
   const [isloading, setIsLoading] = useState(false);
@@ -62,12 +58,12 @@ function From({ setContacts, information, setVisibility }) {
     }
     if (formData.email === "") {
       errors.email = "ایمیل خود را وارد کنید";
-    } else if (!emailPattern.test(formData.email)) {
+    } else if (!emailPattern.test(formData.email) && formData.email) {
       errors.email = "فرمت ایمیل صحیح وارد کنید را وارد کنید";
     }
     if (formData.phone === "") {
       errors.phone = "شماره تماس  خود را وارد کنید";
-    } else if (!phoneNumberPattern.test(formData.phone)) {
+    } else if (!phoneNumberPattern.test(formData.phone) && formData.phone) {
       errors.phone = "فرمت شماره تلفن صحیح وارد کنید را وارد کنید";
     }
     if (formData.relationship === "") {
@@ -149,7 +145,7 @@ function From({ setContacts, information, setVisibility }) {
             type={"primery"}
             label={information ? "ویرایش" : "اضافه کردن"}
             className={"py-2 px-5 w-fit rounded-md "}
-            disabled={!!Object.keys(error).length}
+            disabled={!!Object.keys(error).length || Object.keys(formData).length < 5}
             onClick={fromCilckHandler}
           />
         </form>
