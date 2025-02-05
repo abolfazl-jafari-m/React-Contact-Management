@@ -14,7 +14,7 @@ function Contacts({contacts , setContacts}) {
   
   }, []);
 
-  const contactItems = contacts?.map((contact)=><ContactCard key={contact.id} contact={contact} />)
+  const contactItems = contacts?.map((contact)=><ContactCard key={contact.id} contact={contact} setContacts={setContacts} />)
   return (
     <>
       <div className=" p-4" >

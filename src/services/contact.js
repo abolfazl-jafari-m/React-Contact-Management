@@ -1,6 +1,6 @@
 import { toast, Slide } from "react-toastify";
 
-const BASE_URL = "http://localhost:3000/contacts"
+const BASE_URL = "http://localhost:5000/contacts"
 
 
 export async function getContacts() {
@@ -30,7 +30,7 @@ export async function getContacts() {
 
 export async function getContact(id) {
     try {
-        const resopone = await fetch(BASE_URL/id);
+        const resopone = await fetch(`${BASE_URL}/${id}`);
         if (!resopone.ok) {
             throw new Error("Your Contact Not Found")
         }
@@ -57,7 +57,7 @@ export async function storeContact(contact) {
         const resopone = await fetch(BASE_URL , {
             method : "POST",
             headers : {
-                "contact-Type" : "application/son"
+                "Content-Type" : "application/json"
             },
             body : JSON.stringify(contact)
         });
@@ -83,10 +83,10 @@ export async function storeContact(contact) {
 }
 export async function updateContact(id,contact) {
     try {
-        const resopone = await fetch(BASE_URL/id , {
+        const resopone = await fetch(`${BASE_URL}/${id}`, {
             method : "PUT",
             headers : {
-                "contact-Type" : "application/son"
+                "Content-Type" : "application/json"
             },
             body : JSON.stringify(contact)
         });
@@ -110,11 +110,12 @@ export async function updateContact(id,contact) {
     }  
 }
 export async function deleteContact(id) {
+
     try {
-        const resopone = await fetch(BASE_URL/id , {
+        const resopone = await fetch(`${BASE_URL}/${id}`, {
             method : "DELETE",
             headers : {
-                "contact-Type" : "application/son"
+                "Content-Type" : "application/json"
             },
         });
         if (!resopone.ok) {
