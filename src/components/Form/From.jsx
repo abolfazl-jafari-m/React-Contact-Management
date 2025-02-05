@@ -3,12 +3,17 @@ import Label from "../shared/Label/Label";
 import Input from "../shared/Input/Input";
 import Button from "../shared/Button/Button";
 import SelectBox from "../shared/SelectBox/SelectBox";
-import { storeContact } from "../../services/contact";
+import { storeContact, updateContact } from "../../services/contact";
 
-function From({setContacts}) {
-  const [formData, setFormData] = useState({name: '' , lastName : '' , relationship : "" , email : "" , phone : ""});
+function From({ setContacts, information , setVisibility }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    lastName: "",
+    relationship: "",
+    email: "",
+    phone: "",
+  });
   const [error, setError] = useState({});
-
   const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const phoneNumberPattern = /((0?9)|(\+?989))\d{9}/;
 
@@ -16,17 +21,28 @@ function From({setContacts}) {
     const { name, value } = e.target;
     setFormData((f) => ({ ...f, [name]: value }));
   };
-  const fromCilckHandler = (e)=>{
+  const fromCilckHandler = (e) => {
     e.preventDefault();
-    storeContact(formData)
-      .then((res)=>{
-        if(res){
-            setContacts((c)=>{
-              return [...c , res];
-            })
+    if (!information) {
+      storeContact(formData).then((res) => {
+        if (res) {
+          setContacts((c) => {
+            return [...c, res];
+          });
         }
-      })
-  }
+      });
+    } else {
+      updateContact(information.id, formData).then((res) => {
+        if (res) {
+          setContacts((c) => {
+            let data = c.filter((item)=> item.id !== information.id)
+            return [...data , res]
+          });
+          setVisibility(false)
+        }
+      });
+    }
+  };
 
   const fromVaildation = () => {
     const errors = {};
@@ -51,6 +67,11 @@ function From({setContacts}) {
     }
     setError(errors);
   };
+  useEffect(() => {
+    if (information) {
+      setFormData(information);
+    }
+  }, []);
 
   useEffect(() => {
     fromVaildation();
@@ -95,12 +116,12 @@ function From({setContacts}) {
           <div className="flex gap-1 flex-col">
             <Label label={"نسبت"} />
             <SelectBox
-            onChange={inputHandler}
-            name={"relationship"}
-            error={error.relationship}
-            placeholder="نسبت..."
-            value={formData.relationship}
-            options={["فامیل " ,"دوست","اشنا","همکار", "خانواده"]}
+              onChange={inputHandler}
+              name={"relationship"}
+              error={error.relationship}
+              placeholder="نسبت..."
+              value={formData.relationship}
+              options={["فامیل ", "دوست", "اشنا", "همکار", "خانواده"]}
             />
           </div>
           <div className="flex gap-1 flex-col">
@@ -115,7 +136,7 @@ function From({setContacts}) {
           </div>
           <Button
             type={"primery"}
-            label={"اضافه کردن"}
+            label={information ? "ویرایش" : "اضافه کردن"}
             className={"py-2 px-5 w-fit rounded-md "}
             disabled={!!Object.keys(error).length}
             onClick={fromCilckHandler}

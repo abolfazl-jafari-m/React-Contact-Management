@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import UserInfo from "./UserInfo/UserInfo";
 import Button from "../../shared/Button/Button";
-import { deleteContact } from "../../../services/contact";
+import { deleteContact, getContact } from "../../../services/contact";
+import Modal from "../../Modal/Modal";
 
 function ContactCard({ contact , setContacts }) {
   const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal , setEditModal]=useState(false);
 
   const deleteBtnHandler = () =>{
     deleteContact(contact.id)
@@ -15,6 +17,9 @@ function ContactCard({ contact , setContacts }) {
               })
         }
       })
+  }
+  const editBtnHandler =()=>{
+    setEditModal(true)
   }
   return (
     <>
@@ -30,6 +35,7 @@ function ContactCard({ contact , setContacts }) {
             label={"ویرایش"}
             type={"edit"}
             className={"py-1 px-5 w-fit rounded-r-md "}
+            onClick={editBtnHandler}
           />
           <Button
             label={"حذف"}
@@ -61,6 +67,10 @@ function ContactCard({ contact , setContacts }) {
           </div>
         </div>
       )}
+      {
+        editModal && <Modal setContacts={setContacts} contact={contact} setVisibility={setEditModal}/>
+      }
+      
     </>
   );
 }
