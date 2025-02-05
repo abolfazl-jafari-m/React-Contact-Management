@@ -3,8 +3,9 @@ import Label from "../shared/Label/Label";
 import Input from "../shared/Input/Input";
 import Button from "../shared/Button/Button";
 import SelectBox from "../shared/SelectBox/SelectBox";
+import { storeContact } from "../../services/contact";
 
-function From() {
+function From({setContacts}) {
   const [formData, setFormData] = useState({name: '' , lastName : '' , relationship : "" , email : "" , phone : ""});
   const [error, setError] = useState({});
 
@@ -17,10 +18,14 @@ function From() {
   };
   const fromCilckHandler = (e)=>{
     e.preventDefault();
-    console.log(formData);
-    
-    
-
+    storeContact(formData)
+      .then((res)=>{
+        if(res){
+            setContacts((c)=>{
+              return [...c , res];
+            })
+        }
+      })
   }
 
   const fromVaildation = () => {

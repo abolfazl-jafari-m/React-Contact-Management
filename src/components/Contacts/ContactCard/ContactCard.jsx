@@ -2,14 +2,14 @@ import React from 'react'
 import UserInfo from './UserInfo/UserInfo'
 import Button from '../../shared/Button/Button'
 
-function ContactCard() {
+function ContactCard({contact}) {
   return (
     <div className='rounded-md bg-gray-300 px-6 py-3 flex flex-col gap-4'>
         <div className='flex flex-col gap-0.5'>
-            <UserInfo info={"ابوالفضل"} label={"نام"} />
-            <UserInfo info={"فامیل"} label={"نسبت"} />
-            <UserInfo info={"09125203054"} label={"شماره تلفن"} />
-            <UserInfo info={"abolfazljafari563@gmail.com"} label={"ایمیل"} />
+            <UserInfo info={contact.name} label={"نام"} />
+            <UserInfo info={contact.relationship} label={"نسبت"} />
+            <UserInfo info={contact.phone} label={"شماره تلفن"} />
+            <UserInfo info={contact.email} label={"ایمیل"} />
 
         </div>
         <div className='self-end'>
