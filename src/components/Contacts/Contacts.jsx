@@ -3,14 +3,18 @@ import ContactCard from "./ContactCard/ContactCard";
 import { toast, Slide } from "react-toastify";
 import { getContacts } from "../../services/contact";
 import empty from "../../assets/Images/empty-state.png"
+import Loading from "../Loading/Loading";
 
 function Contacts({contacts , setContacts}) {
+  const [isloading , setIsLoading]=  useState(true)
   useEffect(() => {
     getContacts()
         .then((res) => {
           if (res) {
             setContacts(res);
           }
+    }).finally(()=>{
+      setIsLoading(false);
     })
   
   }, []);
@@ -32,6 +36,9 @@ function Contacts({contacts , setContacts}) {
           
         </div>
       </div>
+      {
+        isloading && <Loading />
+      }
     </>
   );
 }

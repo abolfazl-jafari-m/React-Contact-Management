@@ -3,12 +3,14 @@ import UserInfo from "./UserInfo/UserInfo";
 import Button from "../../shared/Button/Button";
 import { deleteContact, getContact } from "../../../services/contact";
 import Modal from "../../Modal/Modal";
+import Loading from "../../Loading/Loading";
 
 function ContactCard({ contact , setContacts }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal , setEditModal]=useState(false);
-
+  const [isloading , setIsLoading]= useState(false);
   const deleteBtnHandler = () =>{
+    setIsLoading(true);
     deleteContact(contact.id)
       .then((res)=>{
         if(res){
@@ -16,6 +18,8 @@ function ContactCard({ contact , setContacts }) {
                 return c.filter((item)=> item.id !== contact.id)
               })
         }
+      }).finally(()=>{
+        setIsLoading(false)
       })
   }
   const editBtnHandler =()=>{
@@ -71,6 +75,9 @@ function ContactCard({ contact , setContacts }) {
         editModal && <Modal setContacts={setContacts} contact={contact} setVisibility={setEditModal}/>
       }
       
+      {
+        isloading && <Loading />
+      }
     </>
   );
 }

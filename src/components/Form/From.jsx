@@ -4,8 +4,9 @@ import Input from "../shared/Input/Input";
 import Button from "../shared/Button/Button";
 import SelectBox from "../shared/SelectBox/SelectBox";
 import { storeContact, updateContact } from "../../services/contact";
+import Loading from "../Loading/Loading";
 
-function From({ setContacts, information , setVisibility }) {
+function From({ setContacts, information, setVisibility }) {
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
@@ -14,6 +15,7 @@ function From({ setContacts, information , setVisibility }) {
     phone: "",
   });
   const [error, setError] = useState({});
+  const [isloading, setIsLoading] = useState(false);
   const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const phoneNumberPattern = /((0?9)|(\+?989))\d{9}/;
 
@@ -22,25 +24,34 @@ function From({ setContacts, information , setVisibility }) {
     setFormData((f) => ({ ...f, [name]: value }));
   };
   const fromCilckHandler = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     if (!information) {
-      storeContact(formData).then((res) => {
-        if (res) {
-          setContacts((c) => {
-            return [...c, res];
-          });
-        }
-      });
+      storeContact(formData)
+        .then((res) => {
+          if (res) {
+            setContacts((c) => {
+              return [...c, res];
+            });
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     } else {
-      updateContact(information.id, formData).then((res) => {
-        if (res) {
-          setContacts((c) => {
-            let data = c.filter((item)=> item.id !== information.id)
-            return [...data , res]
-          });
-          setVisibility(false)
-        }
-      });
+      updateContact(information.id, formData)
+        .then((res) => {
+          if (res) {
+            setContacts((c) => {
+              let data = c.filter((item) => item.id !== information.id);
+              return [...data, res];
+            });
+            setVisibility(false);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -143,6 +154,9 @@ function From({ setContacts, information , setVisibility }) {
           />
         </form>
       </div>
+      {
+        isloading && <Loading />
+      }
     </>
   );
 }
