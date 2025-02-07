@@ -5,6 +5,7 @@ import Button from "../shared/Button/Button";
 import SelectBox from "../shared/SelectBox/SelectBox";
 import { storeContact, updateContact } from "../../services/contact";
 import Loading from "../Loading/Loading";
+import { toast , Slide } from "react-toastify";
 
 function From({ setContacts, information, setVisibility }) {
   const [formData, setFormData] = useState({
@@ -26,6 +27,17 @@ function From({ setContacts, information, setVisibility }) {
       storeContact(formData)
         .then((res) => {
           if (res) {
+            toast.success("مخاطب با موفقیت اضافه شد",{
+              position: "bottom-left",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Slide,
+              });
             setContacts((c) => {
               return [...c, res];
             });
@@ -38,6 +50,17 @@ function From({ setContacts, information, setVisibility }) {
       updateContact(information.id, formData)
         .then((res) => {
           if (res) {
+            toast.success("مخاطب با موفقیت اپدیت شد",{
+              position: "bottom-left",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Slide,
+              });
             setContacts((c) => {
               let data = c.filter((item) => item.id !== information.id);
               return [...data, res];
